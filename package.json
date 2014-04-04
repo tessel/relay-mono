@@ -1,0 +1,27 @@
+{
+  "name": "relay-mono",
+  "version": "0.0.1",
+  "description": "Library to run the relay module.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "hardware": {
+    "./examples": false,
+    "./test" : false
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tessel/modules.git"
+  },
+  "author": "Jon McKay <jon@technical.io>",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "directories": {
+    "example": "examples"
+  },
+  "keywords": [
+    "tessel",
+    "relay"
+  ],
+}

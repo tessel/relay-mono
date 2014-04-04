@@ -1,0 +1,78 @@
+var util = require('util');
+var events = require('events');
+
+function use(hardware, next) {
+	return new Relay(hardware, next);
+}
+
+function Relay(hardware, next) {
+	this.hardware = hardware;
+	next && next(null, this);
+	setImmediate(function() {
+		this.emit('ready');
+	}.bind(this));
+}
+
+util.inherits(Relay, events.EventEmitter);
+
+Relay.prototype.turnOn = function(chan, next) {
+	this._setValue(chan, true, next);
+}
+
+Relay.prototype.turnOff = function(chan, next) {
+	this._setValue(chan, false, next);
+}
+
+Relay.prototype.toggle = function(chan, next) {
+	this.getState(chan, function gotState(err, state) {
+		if (err) {
+			return next && next(err);
+		}
+		else {
+			this._setValue(chan, !state, next);
+			next && next();
+		}
+	}.bind(this))
+}
+
+
+Relay.prototype.getState = function(chan, next) {
+	var err;
+	if ((err = this._validChannel(chan))) {
+		return next && next(err);
+	}
+	else {
+		next && next(null, this.hardware.gpio(chan).readSync());
+	}
+}
+
+Relay.prototype._setValue = function(chan, value, next) {
+	var err;
+	if ((err = this._validChannel(chan))) {
+		return next && next(err);
+	}
+	else {
+		// Get the relay
+		var relay = this.hardware.gpio(chan);
+		// Set the value of that gpio
+		relay.writeSync(value);
+
+		// Call the callback
+		next && next();
+
+		// Set the event
+		setImmediate(function() {
+			this.emit('latch', chan, value);
+		}.bind(this))
+	}
+}
+
+Relay.prototype._validChannel = function(channel) {
+	if (!(channel > 0 || channel <= Object.keys(this.relays))) {
+		return new Error("Invalid relay channel. Must be 1 or 2.");
+	}
+	return null;
+}
+
+module.exports.use = use;
+module.exports.Relay = Relay;
