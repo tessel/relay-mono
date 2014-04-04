@@ -16,17 +16,8 @@ var relay = relayDriver.use(port, function(err) {
 
 relay.on('ready', function relayReady() {
   console.log('ready!');
-})
+});
 
 relay.on('latch', function(channel, value) {
   console.log('latch on channel ' + channel + ' switched to', value);
-})
-
-
-// var pin = port.gpio(1).output();
-// var value = false;
-// setInterval(function() {
-//   pin.writeSync(value);
-//   value = !value;
-//   console.log(pin.readSync());
-// }, 3000);
+});
