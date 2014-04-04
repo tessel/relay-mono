@@ -1,14 +1,14 @@
 var tessel = require('tessel');
 var relayDriver = require('../');
-
-var relay = relayDriver.use(tessel.port('a'), function(err) {
+var port = tessel.port('a');
+var relay = relayDriver.use(port, function(err) {
   console.log('connected!');
 
-  setInterval(function toggleOne() {
-    relay.toggle(1, function toggleResult(err) {
+  setInterval(function toggle() {
+    relay.toggle(1, function toggleOneResult(err) {
       if (err) console.log("Err toggling 1", err);
     });
-    relay.toggle(2, function toggleResult(err) {
+    relay.toggle(2, function toggleTwoResult(err) {
       if (err) console.log("Err toggling 2", err);
     });
   }, 2000);
@@ -22,4 +22,11 @@ relay.on('latch', function(channel, value) {
   console.log('latch on channel ' + channel + ' switched to', value);
 })
 
-setInterval(function() {}, 20000);
+
+// var pin = port.gpio(1).output();
+// var value = false;
+// setInterval(function() {
+//   pin.writeSync(value);
+//   value = !value;
+//   console.log(pin.readSync());
+// }, 3000);

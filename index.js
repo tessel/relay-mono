@@ -6,8 +6,14 @@ function use(hardware, next) {
 }
 
 function Relay(hardware, next) {
+	// Save the port
 	this.hardware = hardware;
+	// Set the gpios as output
+	this.hardware.gpio(1).setOutput(false);
+	this.hardware.gpio(2).setOutput(false);
+	// We're done setting up, call callback
 	next && next(null, this);
+	// Emit the ready event
 	setImmediate(function() {
 		this.emit('ready');
 	}.bind(this));
@@ -56,10 +62,8 @@ Relay.prototype._setValue = function(chan, value, next) {
 		var relay = this.hardware.gpio(chan);
 		// Set the value of that gpio
 		relay.writeSync(value);
-
 		// Call the callback
 		next && next();
-
 		// Set the event
 		setImmediate(function() {
 			this.emit('latch', chan, value);
