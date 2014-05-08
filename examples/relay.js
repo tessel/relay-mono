@@ -1,5 +1,5 @@
 var tessel = require('tessel');
-var relayDriver = require('relay-mono');
+var relayDriver = require('../');
 
 var relay = relayDriver.use(tessel.port('a'), function(err) {
   console.log('connected!');

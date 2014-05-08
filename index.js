@@ -9,8 +9,8 @@ function Relay(hardware, next) {
 	// Save the port
 	this.hardware = hardware;
 	// Set the gpios as output
-	this.hardware.gpio(1).setOutput(false);
-	this.hardware.gpio(2).setOutput(false);
+	this.hardware.gpio(1).output(false);
+	this.hardware.gpio(2).output(false);
 	// We're done setting up, call callback
 	if(next) {
 		next(null, this);
@@ -52,7 +52,7 @@ Relay.prototype.getState = function(chan, next) {
 	}
 	else {
 		if (next) {
-			next(null, this.hardware.gpio(chan).readSync());
+			next(null, this.hardware.gpio(chan).rawRead());
 		}
 	}
 };
@@ -66,7 +66,7 @@ Relay.prototype._setValue = function(chan, value, next) {
 		// Get the relay
 		var relay = this.hardware.gpio(chan);
 		// Set the value of that gpio
-		relay.writeSync(value);
+		relay.write(value);
 		// Call the callback
 		if (next) {
 			next();
