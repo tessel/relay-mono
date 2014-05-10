@@ -1,19 +1,19 @@
 var util = require('util');
 var events = require('events');
 
-function use(hardware, next) {
-	return new Relay(hardware, next);
+function use(hardware, callback) {
+	return new Relay(hardware, callback);
 }
 
-function Relay(hardware, next) {
+function Relay(hardware, callback) {
 	// Save the port
 	this.hardware = hardware;
 	// Set the gpios as output
 	this.hardware.gpio(1).output(false);
 	this.hardware.gpio(2).output(false);
 	// We're done setting up, call callback
-	if(next) {
-		next(null, this);
+	if(callback) {
+		callback(null, this);
 	}
 	// Emit the ready event
 	setImmediate(function() {
@@ -23,10 +23,10 @@ function Relay(hardware, next) {
 
 util.inherits(Relay, events.EventEmitter);
 
-Relay.prototype._setValue = function(chan, value, next) {
+Relay.prototype._setValue = function(chan, value, callback) {
 	var err;
 	if ((err = this._validChannel(chan))) {
-		return next && next(err);
+		return callback && callback(err);
 	}
 	else {
 		// Get the relay
@@ -34,8 +34,8 @@ Relay.prototype._setValue = function(chan, value, next) {
 		// Set the value of that gpio
 		relay.write(value);
 		// Call the callback
-		if (next) {
-			next();
+		if (callback) {
+			callback();
 		}
 		// Set the event
 		setImmediate(function() {
@@ -51,38 +51,38 @@ Relay.prototype._validChannel = function(channel) {
 	return null;
 };
 
-Relay.prototype.getState = function(chan, next) {
+Relay.prototype.getState = function(chan, callback) {
 	var err;
 	if ((err = this._validChannel(chan))) {
-		return next && next(err);
+		return callback && callback(err);
 	}
 	else {
-		if (next) {
-			next(null, this.hardware.gpio(chan).rawRead());
+		if (callback) {
+			callback(null, this.hardware.gpio(chan).rawRead());
 		}
 	}
 };
 
-Relay.prototype.toggle = function(chan, next) {
+Relay.prototype.toggle = function(chan, callback) {
 	this.getState(chan, function gotState(err, state) {
 		if (err) {
-			return next && next(err);
+			return callback && callback(err);
 		}
 		else {
-			this._setValue(chan, !state, next);
-			if (next) {
-				next();
+			this._setValue(chan, !state, callback);
+			if (callback) {
+				callback();
 			}
 		}
 	}.bind(this));
 };
 
-Relay.prototype.turnOff = function(chan, next) {
-	this._setValue(chan, false, next);
+Relay.prototype.turnOff = function(chan, callback) {
+	this._setValue(chan, false, callback);
 };
 
-Relay.prototype.turnOn = function(chan, next) {
-	this._setValue(chan, true, next);
+Relay.prototype.turnOn = function(chan, callback) {
+	this._setValue(chan, true, callback);
 };
 
 module.exports.use = use;
