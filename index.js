@@ -1,10 +1,6 @@
 var util = require('util');
 var events = require('events');
 
-function use(hardware, callback) {
-	return new Relay(hardware, callback);
-}
-
 function Relay(hardware, callback) {
 	// Save the port
 	this.hardware = hardware;
@@ -84,6 +80,10 @@ Relay.prototype.turnOff = function(channel, callback) {
 Relay.prototype.turnOn = function(channel, callback) {
 	this._setValue(channel, true, callback);
 };
+
+function use(hardware, callback) {
+	return new Relay(hardware, callback);
+}
 
 module.exports.use = use;
 module.exports.Relay = Relay;
