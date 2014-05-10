@@ -40,7 +40,11 @@ relay.on('latch', function(channel, value) {
 });
 ```
 
-##API
+##Methods
+
+*  **`relay`.configure(whichServo, minPWM, maxPWM, callback())** Sets the PWM max and min for the specified servo.
+
+*  **
 
 ###Commands
 ```.js
@@ -69,5 +73,5 @@ relay.on('latch', function(channel, newState){...});
 ```
 
 ## License
-
 MIT
+APACHE

@@ -23,40 +23,6 @@ function Relay(hardware, next) {
 
 util.inherits(Relay, events.EventEmitter);
 
-Relay.prototype.turnOn = function(chan, next) {
-	this._setValue(chan, true, next);
-};
-
-Relay.prototype.turnOff = function(chan, next) {
-	this._setValue(chan, false, next);
-};
-
-Relay.prototype.toggle = function(chan, next) {
-	this.getState(chan, function gotState(err, state) {
-		if (err) {
-			return next && next(err);
-		}
-		else {
-			this._setValue(chan, !state, next);
-			if (next) {
-				next();
-			}
-		}
-	}.bind(this));
-};
-
-Relay.prototype.getState = function(chan, next) {
-	var err;
-	if ((err = this._validChannel(chan))) {
-		return next && next(err);
-	}
-	else {
-		if (next) {
-			next(null, this.hardware.gpio(chan).rawRead());
-		}
-	}
-};
-
 Relay.prototype._setValue = function(chan, value, next) {
 	var err;
 	if ((err = this._validChannel(chan))) {
@@ -83,6 +49,40 @@ Relay.prototype._validChannel = function(channel) {
 		return new Error("Invalid relay channel. Must be 1 or 2.");
 	}
 	return null;
+};
+
+Relay.prototype.getState = function(chan, next) {
+	var err;
+	if ((err = this._validChannel(chan))) {
+		return next && next(err);
+	}
+	else {
+		if (next) {
+			next(null, this.hardware.gpio(chan).rawRead());
+		}
+	}
+};
+
+Relay.prototype.toggle = function(chan, next) {
+	this.getState(chan, function gotState(err, state) {
+		if (err) {
+			return next && next(err);
+		}
+		else {
+			this._setValue(chan, !state, next);
+			if (next) {
+				next();
+			}
+		}
+	}.bind(this));
+};
+
+Relay.prototype.turnOff = function(chan, next) {
+	this._setValue(chan, false, next);
+};
+
+Relay.prototype.turnOn = function(chan, next) {
+	this._setValue(chan, true, next);
 };
 
 module.exports.use = use;
