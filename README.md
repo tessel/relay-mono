@@ -42,26 +42,13 @@ relay.on('latch', function(channel, value) {
 
 ##Methods
 
-*  **`relay`.configure(whichServo, minPWM, maxPWM, callback())** Sets the PWM max and min for the specified servo.
+*  **`relay`.getState(relayChannel, callback(err, state))** Gets the state of the specified relay channel: "true" for on and "false" for off.
 
-*  **
+*  **`relay`.toggle(relayChannel, callback(err))** Switches the state of the specified relay channel: on if it's off; off if it's on.
 
-###Commands
-```.js
-// Channel is either 1 or 2
-// Complete the circuit through relay 1. Channel is 1 or 2
-relay.turnOn( channel, function(err) {...} );
+*  **`relay`.turnOff(relayChannel, callback(err))** Switches off the specified relay channel.
 
-// Disconnect the circuit through relay 1. Channel is 1 or 2
-relay.turnOff( channel, function(err) {...} );
-
-// Toggle the latch state through relay 1. Channel is 1 or 2
-relay.toggle( channel, function(err) {...} );
-
-// Get the state of the relay (true or false). Channel is 1 or 2
-relay.getState( channel, function(err, state) {...} );
-
-```
+*  **`relay`.turnOn(relayChannel, callback(err))** Switches on the specified relay channel.
 
 ###Events
 ```.js
