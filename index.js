@@ -23,14 +23,14 @@ function Relay(hardware, callback) {
 
 util.inherits(Relay, events.EventEmitter);
 
-Relay.prototype._setValue = function(chan, value, callback) {
+Relay.prototype._setValue = function(channel, value, callback) {
 	var err;
-	if ((err = this._validChannel(chan))) {
+	if ((err = this._validChannel(channel))) {
 		return callback && callback(err);
 	}
 	else {
 		// Get the relay
-		var relay = this.hardware.gpio(chan);
+		var relay = this.hardware.gpio(channel);
 		// Set the value of that gpio
 		relay.write(value);
 		// Call the callback
@@ -39,7 +39,7 @@ Relay.prototype._setValue = function(chan, value, callback) {
 		}
 		// Set the event
 		setImmediate(function() {
-			this.emit('latch', chan, value);
+			this.emit('latch', channel, value);
 		}.bind(this));
 	}
 };
@@ -51,25 +51,25 @@ Relay.prototype._validChannel = function(channel) {
 	return null;
 };
 
-Relay.prototype.getState = function(chan, callback) {
+Relay.prototype.getState = function(channel, callback) {
 	var err;
-	if ((err = this._validChannel(chan))) {
+	if ((err = this._validChannel(channel))) {
 		return callback && callback(err);
 	}
 	else {
 		if (callback) {
-			callback(null, this.hardware.gpio(chan).rawRead());
+			callback(null, this.hardware.gpio(channel).rawRead());
 		}
 	}
 };
 
-Relay.prototype.toggle = function(chan, callback) {
-	this.getState(chan, function gotState(err, state) {
+Relay.prototype.toggle = function(channel, callback) {
+	this.getState(channel, function gotState(err, state) {
 		if (err) {
 			return callback && callback(err);
 		}
 		else {
-			this._setValue(chan, !state, callback);
+			this._setValue(channel, !state, callback);
 			if (callback) {
 				callback();
 			}
@@ -77,12 +77,12 @@ Relay.prototype.toggle = function(chan, callback) {
 	}.bind(this));
 };
 
-Relay.prototype.turnOff = function(chan, callback) {
-	this._setValue(chan, false, callback);
+Relay.prototype.turnOff = function(channel, callback) {
+	this._setValue(channel, false, callback);
 };
 
-Relay.prototype.turnOn = function(chan, callback) {
-	this._setValue(chan, true, callback);
+Relay.prototype.turnOn = function(channel, callback) {
+	this._setValue(channel, true, callback);
 };
 
 module.exports.use = use;
