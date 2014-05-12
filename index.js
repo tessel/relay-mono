@@ -41,8 +41,11 @@ Relay.prototype._setValue = function(channel, value, callback) {
 };
 
 Relay.prototype._validChannel = function(channel) {
+	var self = this;
 	if (!(channel > 0 || channel <= Object.keys(this.relays))) {
-		return new Error("Invalid relay channel. Must be 1 or 2.");
+		var err = new Error("Invalid relay channel. Must be 1 or 2.");
+		self.emit('error', err);
+		return err;
 	}
 	return null;
 };

@@ -51,13 +51,12 @@ relay.on('latch', function(channel, value) {
 *  **`relay`.turnOn(relayChannel, callback(err))** Switches on the specified relay channel.
 
 ###Events
-```.js
-// Called when module is connected and ready to receive commands
-relay.on( 'ready', function() {...} );
 
-// The latch state was changed
-relay.on('latch', function(channel, newState){...});
-```
+* **`relay`.on('error', callback(err))** Emitted upon error.
+
+* **`relay`.on('latch', callback(channel, state))** Emitted when the latch state (boolean on or off) is changed for a channel.
+
+* **`relay`.on('ready', callback())** Emitted upon first successful communication between the Tessel and the module.
 
 ## License
 MIT
