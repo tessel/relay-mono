@@ -72,6 +72,10 @@ Relay.prototype.getState = function(channel, callback) {
 	}
 };
 
+Relay.prototype.setState = function(channel, state, callback) {
+	this._setValue(channel, state, callback);
+}
+
 // Switches the state of the specified relay channel: on if it's off; off if it's on
 Relay.prototype.toggle = function(channel, callback) {
 	this.getState(channel, function gotState(err, state) {
@@ -80,9 +84,6 @@ Relay.prototype.toggle = function(channel, callback) {
 		}
 		else {
 			this._setValue(channel, !state, callback);
-			if (callback) {
-				callback();
-			}
 		}
 	}.bind(this));
 };
