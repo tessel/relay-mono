@@ -84,9 +84,6 @@ Relay.prototype.toggle = function(channel, callback) {
 		}
 		else {
 			this._setValue(channel, !state, callback);
-			if (callback) {
-				callback();
-			}
 		}
 	}.bind(this));
 };
