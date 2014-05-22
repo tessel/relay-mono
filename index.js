@@ -13,16 +13,15 @@ var events = require('events');
 function Relay(hardware, callback) {
 	// Save the port
 	this.hardware = hardware;
+	
 	// Set the gpios as output
-	this.hardware.gpio(1).output(false);
-	this.hardware.gpio(2).output(false);
-	// We're done setting up, call callback
-	if(callback) {
-		callback(null, this);
-	}
+	this.hardware.digital[1].output(false);
+	this.hardware.digital[2].output(false);
+
 	// Emit the ready event
 	setImmediate(function() {
 		this.emit('ready');
+		callback && callback(null, this);
 	}.bind(this));
 }
 
@@ -35,7 +34,7 @@ Relay.prototype._setValue = function(channel, value, callback) {
 	}
 	else {
 		// Get the relay
-		var relay = this.hardware.gpio(channel);
+		var relay = this.hardware.digital[channel];
 		// Set the value of that gpio
 		relay.write(value);
 		// Call the callback
@@ -66,15 +65,13 @@ Relay.prototype.getState = function(channel, callback) {
 		return callback && callback(err);
 	}
 	else {
-		if (callback) {
-			callback(null, this.hardware.gpio(channel).rawRead());
-		}
+		callback && callback(null, this.hardware.digital[channel].rawRead());
 	}
 };
 
 Relay.prototype.setState = function(channel, state, callback) {
 	this._setValue(channel, state, callback);
-}
+};
 
 // Switches the state of the specified relay channel: on if it's off; off if it's on
 Relay.prototype.toggle = function(channel, callback) {
@@ -89,18 +86,30 @@ Relay.prototype.toggle = function(channel, callback) {
 };
 
 // Switches off the specified relay channel
-Relay.prototype.turnOff = function(channel, callback) {
-	this._setValue(channel, false, callback);
+Relay.prototype.turnOff = function(channel, delay, callback) {
+	this._setValue(channel, false, function (err) {
+		if (typeof delay == 'function') {
+			delay(err);
+		} else {
+			setTimeout(callback, delay, err);
+		}
+	});
 };
 
 // Switches on the specified relay channel
-Relay.prototype.turnOn = function(channel, callback) {
-	this._setValue(channel, true, callback);
+Relay.prototype.turnOn = function(channel, delay, callback) {
+	this._setValue(channel, true, function (err) {
+		if (typeof delay == 'function') {
+			delay(err);
+		} else {
+			setTimeout(callback, delay, err);
+		}
+	});
 };
 
 function use(hardware, callback) {
 	return new Relay(hardware, callback);
 }
 
-module.exports.use = use;
-module.exports.Relay = Relay;
+exports.use = use;
+exports.Relay = Relay;

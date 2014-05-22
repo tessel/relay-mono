@@ -1,23 +1,44 @@
 var tessel = require('tessel');
 var relayDriver = require('../');
-var port = tessel.port('a');
-var relay = relayDriver.use(port, function(err) {
-  console.log('connected!');
+var port = tessel.port['GPIO'];
 
-  setInterval(function toggle() {
-    relay.toggle(1, function toggleOneResult(err) {
-      if (err) console.log("Err toggling 1", err);
-    });
-    relay.toggle(2, function toggleTwoResult(err) {
-      if (err) console.log("Err toggling 2", err);
-    });
-  }, 2000);
-});
+var pinout = port.digital[4].output().low();
+var pinin = port.digital[5].input();
 
-relay.on('ready', function relayReady() {
-  console.log('ready!');
+var relay = relayDriver.use(port);
+
+console.log('1..5');
+
+relay.on('ready', function () {
+  console.log('# ready');
+  console.log('ok');
+
+  var channel = 2;
+  var timeout = 1000;
+
+  pinout.low();
+  relay.turnOff(channel, timeout, function (err) {
+    console.log('# in', pinin.read());
+    console.log(pinin.read() == 1 ? 'ok' : 'not ok');
+
+    relay.turnOn(channel, timeout, function (err) {
+      console.log('# in', pinin.read());
+      console.log(pinin.read() == 0 ? 'ok' : 'not ok');
+
+      relay.turnOff(channel, timeout, function (err) {
+        pinout.high();
+        console.log('# in', pinin.read());
+        console.log(pinin.read() == 1 ? 'ok' : 'not ok');
+
+        relay.turnOn(channel, timeout, function (err) {
+          console.log('# in', pinin.read());
+          console.log(pinin.read() == 1 ? 'ok' : 'not ok');
+        });
+      });
+    });
+  });
 });
 
 relay.on('latch', function(channel, value) {
-  console.log('latch on channel ' + channel + ' switched to', value);
+  console.log('# latch on channel ' + channel + ' switched to', value);
 });
