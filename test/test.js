@@ -13,7 +13,7 @@ relay.on('ready', function () {
   console.log('# ready');
   console.log('ok');
 
-  var channel = 2;
+  var channel = 1;
   var timeout = 1000;
 
   pinout.low();
