@@ -4,11 +4,14 @@
   "description": "Library to run the Tessel Relay module.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "tinytap -e 'tessel run {} ${RELAY_PORT}' test/*.js"
   },
   "hardware": {
     "./examples": false,
-    "./test" : false
+    "./test": false
+  },
+  "devDependencies": {
+    "tinytap": "0.0.2"
   },
   "repository": {
     "type": "git",
