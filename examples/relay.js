@@ -8,7 +8,7 @@ values to the console upon latching.
 // http://creativecommons.org/publicdomain/zero/1.0/
 
 var tessel = require('tessel');
-var relay = require('../').use(tessel.port('A'));
+var relay = require('../').use(tessel.port['A']);
 
 relay.on('ready', function relayReady () {
   console.log('Ready! Toggling relays...');
