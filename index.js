@@ -15,6 +15,7 @@ function Relay(hardware, callback) {
 	this.hardware = hardware;
 	
 	// Set the gpios as output
+	this.hardware.digital[0].output(false);
 	this.hardware.digital[1].output(false);
 	this.hardware.digital[2].output(false);
 
@@ -34,7 +35,7 @@ Relay.prototype._setValue = function(channel, value, callback) {
 	}
 	else {
 		// Get the relay
-		var relay = this.hardware.digital[channel];
+		var relay = this.hardware.digital[channel - 1];
 		// Set the value of that gpio
 		relay.write(value);
 		// Call the callback
@@ -65,7 +66,7 @@ Relay.prototype.getState = function(channel, callback) {
 		return callback && callback(err);
 	}
 	else {
-		callback && callback(null, this.hardware.digital[channel].rawRead());
+		callback && callback(null, this.hardware.digital[channel - 1].rawRead());
 	}
 };
 
