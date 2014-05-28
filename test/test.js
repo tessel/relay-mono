@@ -2,8 +2,8 @@ var tessel = require('tessel');
 var relayDriver = require('../');
 var port = tessel.port['GPIO'];
 
-var pinout = port.digital[4].output().low();
-var pinin = port.digital[5].input();
+var pinout = port.digital[3].output().low();
+var pinin = port.digital[4].input();
 
 var relay = relayDriver.use(port);
 
