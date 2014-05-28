@@ -1,15 +1,16 @@
+// Any copyright is dedicated to the Public Domain.
+// http://creativecommons.org/publicdomain/zero/1.0/
+
 /*********************************************
 This relay module demo toggles both relay
 channels every two seconds, logging the new
 values to the console upon latching.
 *********************************************/
 
-// Any copyright is dedicated to the Public Domain.
-// http://creativecommons.org/publicdomain/zero/1.0/
-
 var tessel = require('tessel');
 var relay = require('../').use(tessel.port['A']);
 
+// Wait for the module to connect
 relay.on('ready', function relayReady () {
   console.log('Ready! Toggling relays...');
   setInterval(function toggle() {
