@@ -66,7 +66,14 @@ Relay.prototype.getState = function(channel, callback) {
 		return callback && callback(err);
 	}
 	else {
-		callback && callback(null, this.hardware.digital[channel - 1].rawRead());
+		if (this.hardware.board && this.hardware.board.version == 2) {
+			// tessel v2 switches rawRead to async
+			this.hardware.digital[channel - 1].rawRead(function(err, val){
+				callback && callback(err, val);
+			});
+		} else {
+			callback && callback(null, this.hardware.digital[channel - 1].rawRead());
+		}
 	}
 };
 
