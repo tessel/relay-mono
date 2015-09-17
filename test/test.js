@@ -1,11 +1,12 @@
 var tessel = require('tessel');
 var relayDriver = require('../');
-var port = tessel.port['GPIO'];
+var relayPort = tessel.port.A;
+var testPort = tessel.port['B'];
 
-var pinout = port.digital[3].output().low();
-var pinin = port.digital[4].input();
+var pinout = testPort.digital[0];
+var pinin = testPort.digital[1];
 
-var relay = relayDriver.use(port);
+var relay = relayDriver.use(relayPort);
 
 console.log('1..5');
 
@@ -14,30 +15,49 @@ relay.on('ready', function () {
   console.log('ok');
 
   var channel = 1;
-  var timeout = 1000;
 
-  pinout.low();
-  relay.turnOff(channel, timeout, function (err) {
-    console.log('# in', pinin.read());
-    console.log(pinin.read() == 1 ? 'ok' : 'not ok');
-
-    relay.turnOn(channel, timeout, function (err) {
-      console.log('# in', pinin.read());
-      console.log(pinin.read() == 0 ? 'ok' : 'not ok');
-
-      relay.turnOff(channel, timeout, function (err) {
-        pinout.high();
-        console.log('# in', pinin.read());
-        console.log(pinin.read() == 1 ? 'ok' : 'not ok');
-
-        relay.turnOn(channel, timeout, function (err) {
-          console.log('# in', pinin.read());
-          console.log(pinin.read() == 1 ? 'ok' : 'not ok');
+  setup(function() {
+    testHelper(relay.turnOff.bind(relay), channel, 1, function() {
+      testHelper(relay.turnOn.bind(relay), channel, 0, function() {
+        testHelper(relay.turnOff.bind(relay), channel, 1, function() {
+          pinout.write(1, function() {
+            testHelper(relay.turnOn.bind(relay), channel, 1);
+          });
         });
       });
     });
   });
 });
+
+function setup(cb) {
+  pinout.output();
+  pinin.input();
+  pinout.write(false, cb);
+}
+
+function testHelper(relayFunc, channel, expectedValue, cb) {
+  var timeout = 1000;
+
+  relayFunc(channel, timeout, function(err) {
+    if (err) {
+      console.log('not ok', err);
+      return cb && cb();
+    }
+    else {
+      pinin.read(function(err, value) {
+        if (err) {
+          console.log('not ok', err);
+          return cb && cb();
+        }
+        else {
+          console.log('# in', value);
+          console.log(value == expectedValue ? 'ok' : 'not ok');
+          return cb && cb();
+        }
+      });
+    }
+  })
+}
 
 relay.on('latch', function(channel, value) {
   console.log('# latch on channel ' + channel + ' switched to', value);
