@@ -10,7 +10,7 @@ values to the console upon latching.
 var tessel = require('tessel');
 var relaylib = require('../'); // Replace '../' with 'relay-mono' in your own code
 
-var relay = relaylib.use(tessel.port['A']);  
+var relay = relaylib.use(tessel.port['A']);
 
 // Wait for the module to connect
 relay.on('ready', function relayReady () {
