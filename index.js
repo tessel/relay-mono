@@ -10,10 +10,16 @@
 var util = require('util');
 var events = require('events');
 
+var invalidChannel = 'Invalid relay channel. Expected 1 or 2.';
+
+function isInvalidChannel(channel) {
+	return channel !== 1 && channel !== 2;
+}
+
 function Relay(hardware, callback) {
 	// Save the port
 	this.hardware = hardware;
-	
+
 	// Set the gpios as output
 	this.hardware.digital[0].output(false);
 	this.hardware.digital[1].output(false);
@@ -32,9 +38,9 @@ function Relay(hardware, callback) {
 util.inherits(Relay, events.EventEmitter);
 
 Relay.prototype._setValue = function(channel, value, callback) {
-	var err;
-	if ((err = this._validChannel(channel))) {
-		return callback && callback(err);
+
+	if (isInvalidChannel(channel)) {
+		return callback && callback(new Error(invalidChannel));
 	}
 	else {
 		// Get the relay
@@ -56,21 +62,10 @@ Relay.prototype._setValue = function(channel, value, callback) {
 	}
 };
 
-Relay.prototype._validChannel = function(channel) {
-	var self = this;
-	if (!(channel > 0 || channel <= this.currentStates.length)) {
-		var err = new Error("Invalid relay channel. Must be 1 or 2.");
-		self.emit('error', err);
-		return err;
-	}
-	return null;
-};
-
 // Gets the state of the specified relay channel
 Relay.prototype.getState = function(channel, callback) {
-	var err;
-	if ((err = this._validChannel(channel))) {
-		return callback && callback(err);
+	if (isInvalidChannel(channel)) {
+		return callback && callback(new Error(invalidChannel));
 	}
 	else {
 		callback && callback(null, this.currentStates[channel - 1]);

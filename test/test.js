@@ -1,31 +1,57 @@
 var tessel = require('tessel');
 var relayDriver = require('../');
 var relayPort = tessel.port.A;
-var testPort = tessel.port['B'];
+var testPort = tessel.port.B;
 
 var pinout = testPort.digital[0];
 var pinin = testPort.digital[1];
 
 var relay = relayDriver.use(relayPort);
 
-console.log('1..5');
+console.log('1..11');
 
 relay.on('ready', function () {
   console.log('# ready');
   console.log('ok');
 
   var channel = 1;
+  var boundOff = relay.turnOff.bind(relay);
+  var boundOn = relay.turnOn.bind(relay);
 
   setup(function() {
-    testHelper(relay.turnOff.bind(relay), channel, 1, function() {
-      testHelper(relay.turnOn.bind(relay), channel, 0, function() {
-        testHelper(relay.turnOff.bind(relay), channel, 1, function() {
+    testHelper(boundOff, channel, 1, function() {
+      testHelper(boundOn, channel, 0, function() {
+        testHelper(boundOff, channel, 1, function() {
           pinout.write(1, function() {
-            testHelper(relay.turnOn.bind(relay), channel, 1);
+            testHelper(boundOn, channel, 1);
           });
         });
       });
     });
+  });
+
+  relay._setValue(0, 1, function(error) {
+    console.log(error !== null ? 'ok' : 'not ok');
+  });
+
+  relay._setValue(3, 1, function(error) {
+    console.log(error !== null ? 'ok' : 'not ok');
+  });
+
+  relay.getState(0, function(error) {
+    console.log(error !== null ? 'ok' : 'not ok');
+  });
+
+  relay.getState(3, function(error) {
+    console.log(error !== null ? 'ok' : 'not ok');
+  });
+
+  relay.getState(1, function(error) {
+    console.log(error === null ? 'ok' : 'not ok');
+  });
+
+  relay.getState(2, function(error) {
+    console.log(error === null ? 'ok' : 'not ok');
   });
 });
 
