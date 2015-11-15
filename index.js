@@ -19,6 +19,9 @@ function Relay(hardware, callback) {
 	this.hardware.digital[1].output(false);
 	this.hardware.digital[2].output(false);
 
+	// The relays are open by default
+	this.currentStates = [false, false];
+
 	// Emit the ready event
 	setImmediate(function() {
 		this.emit('ready');
@@ -38,6 +41,10 @@ Relay.prototype._setValue = function(channel, value, callback) {
 		var relay = this.hardware.digital[channel - 1];
 		// Set the value of that gpio
 		relay.write(value);
+
+		// Set our current state vars
+		this.currentStates[channel -1] = (value ? true : false);
+
 		// Call the callback
 		if (callback) {
 			callback();
@@ -51,7 +58,7 @@ Relay.prototype._setValue = function(channel, value, callback) {
 
 Relay.prototype._validChannel = function(channel) {
 	var self = this;
-	if (!(channel > 0 || channel <= Object.keys(this.relays))) {
+	if (!(channel > 0 || channel <= this.currentStates.length)) {
 		var err = new Error("Invalid relay channel. Must be 1 or 2.");
 		self.emit('error', err);
 		return err;
@@ -66,7 +73,7 @@ Relay.prototype.getState = function(channel, callback) {
 		return callback && callback(err);
 	}
 	else {
-		callback && callback(null, this.hardware.digital[channel - 1].rawRead());
+		callback && callback(null, this.currentStates[channel - 1]);
 	}
 };
 
