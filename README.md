@@ -1,4 +1,7 @@
-#Relay
+# Relay
+
+[![Code of Conduct](https://img.shields.io/badge/%E2%9D%A4-code%20of%20conduct-blue.svg?style=flat)](https://github.com/tessel/project/blob/master/CONDUCT.md)
+
 Driver for the relay-mono Tessel relay module. The hardware documentation for this module can be found [here](https://github.com/tessel/hardware/blob/master/modules-overview.md#relay).
 
 If you run into any issues you can ask for support on the [Relay Module Forums](http://forums.tessel.io/category/relay).
