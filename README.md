@@ -1,15 +1,18 @@
-#Relay
+# Relay
+
+[![Code of Conduct](https://img.shields.io/badge/%E2%9D%A4-code%20of%20conduct-blue.svg?style=flat)](https://github.com/tessel/project/blob/master/CONDUCT.md)
+
 Driver for the relay-mono Tessel relay module. The hardware documentation for this module can be found [here](https://github.com/tessel/hardware/blob/master/modules-overview.md#relay).
 
 If you run into any issues you can ask for support on the [Relay Module Forums](http://forums.tessel.io/category/relay).
 
-###Installation
-```sh
+### Installation
+```shell
 npm install relay-mono
 ```
 
-###Example
-```js
+### Example
+```javascript
 /*********************************************
 This relay module demo toggles both relay
 channels every two seconds, logging the new
@@ -42,7 +45,8 @@ relay.on('latch', function(channel, value) {
 });
 ```
 
-###Methods
+### Methods
+
 &#x20;<a href="#api-relay-getState-relayChannel-callback-err-state-Gets-the-state-of-the-specified-relay-channel-true-for-on-and-false-for-off" name="api-relay-getState-relayChannel-callback-err-state-Gets-the-state-of-the-specified-relay-channel-true-for-on-and-false-for-off">#</a> relay<b>.getState</b>( relayChannel, callback(err, state) )  
 Gets the state of the specified relay channel: "true" for on and "false" for off.  
 
@@ -55,7 +59,8 @@ Switches off the specified relay channel.
 &#x20;<a href="#api-relay-turnOn-relayChannel-callback-err-Switches-on-the-specified-relay-channel" name="api-relay-turnOn-relayChannel-callback-err-Switches-on-the-specified-relay-channel">#</a> relay<b>.turnOn</b>( relayChannel, callback(err) )  
 Switches on the specified relay channel.  
 
-###Events
+### Events
+
 &#x20;<a href="#api-relay-on-error-callback-err-Emitted-upon-error" name="api-relay-on-error-callback-err-Emitted-upon-error">#</a> relay<b>.on</b>( 'error', callback(err) )  
 Emitted upon error.  
 
@@ -65,5 +70,5 @@ Emitted when the latch state (boolean on *or* off ) is changed for a channel.
 &#x20;<a href="#api-relay-on-ready-callback-Emitted-upon-first-successful-communication-between-the-Tessel-and-the-module" name="api-relay-on-ready-callback-Emitted-upon-first-successful-communication-between-the-Tessel-and-the-module">#</a> relay<b>.on</b>( 'ready', callback() )  
 Emitted upon first successful communication between the Tessel and the module.  
 
-###License
+### License
 MIT or Apache 2.0, at your option
