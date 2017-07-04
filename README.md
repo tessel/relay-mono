@@ -47,27 +47,27 @@ relay.on('latch', function(channel, value) {
 
 ### Methods
 
-* &#x20;<a href="#api-relay-getState-relayChannel-callback-err-state-Gets-the-state-of-the-specified-relay-channel-true-for-on-and-false-for-off" name="api-relay-getState-relayChannel-callback-err-state-Gets-the-state-of-the-specified-relay-channel-true-for-on-and-false-for-off"></a> relay<b>.getState</b>( relayChannel, callback(err, state) )  
+&#x20;<a href="#api-relay-getState-relayChannel-callback-err-state-Gets-the-state-of-the-specified-relay-channel-true-for-on-and-false-for-off" name="api-relay-getState-relayChannel-callback-err-state-Gets-the-state-of-the-specified-relay-channel-true-for-on-and-false-for-off">#</a> relay<b>.getState</b>( relayChannel, callback(err, state) )  
 Gets the state of the specified relay channel: "true" for on and "false" for off.  
 
-* &#x20;<a href="#api-relay-toggle-relayChannel-callback-err-Switches-the-state-of-the-specified-relay-channel-on-if-it-s-off-off-if-it-s-on" name="api-relay-toggle-relayChannel-callback-err-Switches-the-state-of-the-specified-relay-channel-on-if-it-s-off-off-if-it-s-on"></a> relay<b>.toggle</b>( relayChannel, callback(err) )  
+&#x20;<a href="#api-relay-toggle-relayChannel-callback-err-Switches-the-state-of-the-specified-relay-channel-on-if-it-s-off-off-if-it-s-on" name="api-relay-toggle-relayChannel-callback-err-Switches-the-state-of-the-specified-relay-channel-on-if-it-s-off-off-if-it-s-on">#</a> relay<b>.toggle</b>( relayChannel, callback(err) )  
 Switches the state of the specified relay channel: on if it's off; off if it's on.  
 
-* &#x20;<a href="#api-relay-turnOff-relayChannel-callback-err-Switches-off-the-specified-relay-channel" name="api-relay-turnOff-relayChannel-callback-err-Switches-off-the-specified-relay-channel"></a> relay<b>.turnOff</b>( relayChannel, callback(err) )  
+&#x20;<a href="#api-relay-turnOff-relayChannel-callback-err-Switches-off-the-specified-relay-channel" name="api-relay-turnOff-relayChannel-callback-err-Switches-off-the-specified-relay-channel">#</a> relay<b>.turnOff</b>( relayChannel, callback(err) )  
 Switches off the specified relay channel.  
 
-* &#x20;<a href="#api-relay-turnOn-relayChannel-callback-err-Switches-on-the-specified-relay-channel" name="api-relay-turnOn-relayChannel-callback-err-Switches-on-the-specified-relay-channel"></a> relay<b>.turnOn</b>( relayChannel, callback(err) )  
+&#x20;<a href="#api-relay-turnOn-relayChannel-callback-err-Switches-on-the-specified-relay-channel" name="api-relay-turnOn-relayChannel-callback-err-Switches-on-the-specified-relay-channel">#</a> relay<b>.turnOn</b>( relayChannel, callback(err) )  
 Switches on the specified relay channel.  
 
 ### Events
 
-* &#x20;<a href="#api-relay-on-error-callback-err-Emitted-upon-error" name="api-relay-on-error-callback-err-Emitted-upon-error"></a> relay<b>.on</b>( 'error', callback(err) )  
+&#x20;<a href="#api-relay-on-error-callback-err-Emitted-upon-error" name="api-relay-on-error-callback-err-Emitted-upon-error">#</a> relay<b>.on</b>( 'error', callback(err) )  
 Emitted upon error.  
 
-* &#x20;<a href="#api-relay-on-latch-callback-channel-state-Emitted-when-the-latch-state-boolean-on-or-off-is-changed-for-a-channel" name="api-relay-on-latch-callback-channel-state-Emitted-when-the-latch-state-boolean-on-or-off-is-changed-for-a-channel"></a> relay<b>.on</b>( 'latch', callback(channel, state))  
+&#x20;<a href="#api-relay-on-latch-callback-channel-state-Emitted-when-the-latch-state-boolean-on-or-off-is-changed-for-a-channel" name="api-relay-on-latch-callback-channel-state-Emitted-when-the-latch-state-boolean-on-or-off-is-changed-for-a-channel">#</a> relay<b>.on</b>( 'latch', callback(channel, state))  
 Emitted when the latch state (boolean on *or* off ) is changed for a channel.  
 
-* &#x20;<a href="#api-relay-on-ready-callback-Emitted-upon-first-successful-communication-between-the-Tessel-and-the-module" name="api-relay-on-ready-callback-Emitted-upon-first-successful-communication-between-the-Tessel-and-the-module"></a> relay<b>.on</b>( 'ready', callback() )  
+&#x20;<a href="#api-relay-on-ready-callback-Emitted-upon-first-successful-communication-between-the-Tessel-and-the-module" name="api-relay-on-ready-callback-Emitted-upon-first-successful-communication-between-the-Tessel-and-the-module">#</a> relay<b>.on</b>( 'ready', callback() )  
 Emitted upon first successful communication between the Tessel and the module.  
 
 ### License
